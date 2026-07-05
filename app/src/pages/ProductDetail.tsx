@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router';
 import { motion } from 'framer-motion';
 import { ShoppingCart, Heart, GitCompare, ChevronLeft } from 'lucide-react';
@@ -30,7 +30,11 @@ export default function ProductDetail() {
     );
   }
 
-  addRecentlyViewed(product.id);
+  // استفاده از useEffect به جای فراخوانی مستقیم
+  useEffect(() => {
+    addRecentlyViewed(product.id);
+  }, [product.id, addRecentlyViewed]);
+
   const rating = getProductRating(product.id, reviews);
   const productReviews = reviews.filter(r => r.product_id === product.id);
   const inWishlist = isInWishlist(product.id);
@@ -191,13 +195,13 @@ export default function ProductDetail() {
               </button>
               <button
                 onClick={() => inWishlist ? addToWishlist(product.id) : addToWishlist(product.id)}
-                className={`flex items-center justify-center gap-2 px-6 py-3.5 border rounded-xl font-medium transition-colors ${inWishlist ? 'border-red-300 bg-red-50 text-red-600' : 'border-slate-300 text-slate-700 hover:bg-slate-50'}`}
+                className={`flex items-center justify-center gap-2 px-6 py-3.5 border rounded-xl font-medium transition-colors ${inWishlist ? 'border-red-300 bg-red-50 text-red-600' : 'border-slate-300 text-slate-600 hover:border-slate-400'}`}
               >
                 <Heart className={`w-5 h-5 ${inWishlist ? 'fill-red-500' : ''}`} />
               </button>
               <button
                 onClick={() => inCompareList ? addToCompare(product.id) : addToCompare(product.id)}
-                className={`flex items-center justify-center gap-2 px-6 py-3.5 border rounded-xl font-medium transition-colors ${inCompareList ? 'border-amber-300 bg-amber-50 text-amber-600' : 'border-slate-300 text-slate-700 hover:bg-slate-50'}`}
+                className={`flex items-center justify-center gap-2 px-6 py-3.5 border rounded-xl font-medium transition-colors ${inCompareList ? 'border-amber-300 bg-amber-50 text-amber-600' : 'border-slate-300 text-slate-600 hover:border-slate-400'}`}
               >
                 <GitCompare className="w-5 h-5" />
               </button>
